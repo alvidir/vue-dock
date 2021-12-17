@@ -7,25 +7,23 @@
         <span class="icon-container">
           <img :src="header.src">
         </span>
-        <span class="title"> {{ header.title }} </span>
+        <span class="title">
+          {{ header.title }}
+        </span>
       </div>
     </button>
     
     <ul class="nav-items">
       <li v-for="item in items"
           :key="item.id">
-        <a href="#"
-            :class="{idented: active}">
-          <span class="icon-container small">
+        <button>
+          <div class="icon-container small">
             <img v-if="item.src" :src="item.src">
             <i v-if="item.icon" :class="item.icon"></i>
-          </span>
+          </div>
           <span :class="{hidden: !active}"> {{item.name}} </span>
-        </a>
-        <button v-if="item.options"
-                class='bx bx-chevron-down'>
         </button>
-        <!-- span v-if="!active" class="tooltip"> {{item.name}} </span -->
+        <!--span v-if="!active" class="tooltip"> {{item.name}} </span-->
       </li>
     </ul>
     <div class="profile-container">
@@ -40,7 +38,8 @@
         <a class="name" href="#"> {{profile.username}} </a>
         <slot name="under-username"></slot>
       </div>
-      <button class='bx bxs-cog bx-spin-hover'></button>
+      <button class='bx bxs-cog bx-spin-hover'
+              :class="{hidden: !active}"></button>
       <!-- span v-if="!active" class="tooltip"> Application one </span -->
     </div>
   </div>
@@ -110,6 +109,7 @@ export default defineComponent({
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+@use "sass:math";
 @import "fibonacci-styles";
 
 $collapsed-width: $fib-9 * 1px;
@@ -118,7 +118,8 @@ $logo-size: $fib-8 * 1px;
 $icon-size: $fib-7 * 1px;
 $bound-margin: $fib-6 * 1px;
 $text-padding:  $fib-5 * 1px;
-$ident-padding: $fib-7 * 1px;
+$ident: $fib-6 * 1px;
+$transition-lapse: $fib-8 * 0.01s ease-in-out;
 
 .sidebar {
   position: fixed;
@@ -127,22 +128,34 @@ $ident-padding: $fib-7 * 1px;
 
   height: 100%;
   width: $collapsed-width;
-  overflow: hidden;
+  //overflow: hidden;
 
   top: 0;
   left: 0;
   
   background: magenta;
-  transition: width  $fib-8 * 0.01s ease-in-out;
+  transition: width  $transition-lapse,
+              padding-left $transition-lapse;
+
+  .ident {
+    padding-left: $ident !important;
+  }
 
   &.active {
-     width: $expanded-width + $ident-padding;
+    $ident: $ident;
+    width: $expanded-width - $ident;
+    padding-left:  $ident;
   }
 
   button {
     min-width: $collapsed-width;
     background: transparent;
     border: none;
+    transition: opacity $transition-lapse;
+
+    &.hidden { 
+      opacity: 0%;
+    }
 
     &:hover {
       cursor: pointer;
@@ -154,8 +167,13 @@ $ident-padding: $fib-7 * 1px;
   }
 
   .tooltip {
-    z-index: 1;
     position: absolute;
+    padding: $fib-5 * 1px;
+    padding-left: $fib-6 * 1px;
+    padding-right: $fib-6 * 1px;
+    
+    background: red;
+    left: $collapsed-width;
   }
 
   .icon-container {
@@ -168,7 +186,7 @@ $ident-padding: $fib-7 * 1px;
       max-height: $collapsed-width - $double-padding;
       max-width: $collapsed-width - $double-padding;
       $double-padding: $fib-6 * 1px;
-      padding: $double-padding / 2;
+      padding: math.div($double-padding, 2);
       margin: auto;
     }
 
@@ -196,6 +214,7 @@ $ident-padding: $fib-7 * 1px;
     display: flex;
     margin-top: $bound-margin;
     margin-bottom: $bound-margin;
+    overflow: hidden;
 
     .logo {
       display: flex;
@@ -203,6 +222,7 @@ $ident-padding: $fib-7 * 1px;
       flex: 1;
 
       span.title {
+        transition: min-width $transition-lapse;
         font-size: $icon-size;
         font-weight: 600;
       }
@@ -216,27 +236,14 @@ $ident-padding: $fib-7 * 1px;
     }
   }
 
+  span.hidden {
+    opacity: 0% !important;
+    max-width: 0px !important;
+  }
+
   .nav-items {
     flex: 1;
     list-style: none;
-
-    a {
-      display: flex;
-      align-items: center;
-      transition: padding-left $fib-8 * 0.01s ease-in-out;
-
-      &.idented {
-        padding-left: $ident-padding;
-      }
-
-      span {
-        transition: opacity  $fib-8 * 0.01s ease-in-out;
-
-        &.hidden {
-          opacity: 0%;
-        }
-      }
-    }
 
     li {
       display: flex;
@@ -244,11 +251,17 @@ $ident-padding: $fib-7 * 1px;
       justify-content: space-between;
 
       button {
-        height: $collapsed-width;
-        min-width: $collapsed-width;
-        text-align: center;
-        line-height: $collapsed-width;
-        font-size: $icon-size;
+        display: flex;
+        align-items: center;
+
+        span {
+          max-width: $fib-11 * 1px;
+          transition: opacity  $transition-lapse,
+                      max-width $transition-lapse;
+          
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
       }
 
       span {
@@ -263,6 +276,7 @@ $ident-padding: $fib-7 * 1px;
     display: flex;
     margin-top: $bound-margin;
     margin-bottom: $bound-margin;
+    overflow: hidden;
 
     .photo {
       display: flex;
@@ -292,8 +306,12 @@ $ident-padding: $fib-7 * 1px;
 
     .profile-info {
       flex: 1;
-      margin: auto;
+      margin: auto 0 auto 0;
+      
       padding-left: $text-padding;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     button {

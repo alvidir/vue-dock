@@ -48,7 +48,6 @@ export default defineComponent({
           id: "application2",
           name: "Application two",
           icon: "bx bxs-notepad",
-          options: []
         },
         {
           id: "add",
