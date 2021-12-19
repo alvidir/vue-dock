@@ -1,7 +1,8 @@
 <template>
   <div class="sidebar"
        :class="{active: active}">
-    <button class="logo-container"
+    <button v-if="header"
+            class="logo-container"
             @click="switchActivity()">
       <div class="logo">
         <span class="icon-container">
@@ -13,9 +14,12 @@
       </div>
     </button>
     
-    <ul class="nav-items">
+    <ul v-if="items && items.length"
+        class="nav-items">
       <li v-for="item in items"
-          :key="item.id">
+          :key="item.id"
+          class="round-corners fib-6"
+          :class="{selected: item.selected}">
         <button>
           <div class="icon-container small">
             <img v-if="item.src" :src="item.src">
@@ -23,10 +27,14 @@
           </div>
           <span :class="{hidden: !active}"> {{item.name}} </span>
         </button>
-        <!--span v-if="!active" class="tooltip"> {{item.name}} </span-->
+        <span v-if="!active"
+              class="tooltip round-corners fib-4">
+          {{item.name}}
+        </span>
       </li>
     </ul>
-    <div class="profile-container">
+    <div v-if="profile"
+         class="profile-container">
       <div class="photo">
         <i class="warning-icon"
            v-if="profile.warning"
@@ -35,12 +43,20 @@
         <img :src="profile.picture"/>
       </div>
       <div class="profile-info">
-        <a class="name" href="#"> {{profile.username}} </a>
-        <slot name="under-username"></slot>
+        <a class="name" href="#"> {{profile.nickname}} </a>
+        <div class="conn-status"
+            :class="{online: online}">
+          <span>&#9679;</span>
+          <small> {{profile.user}}</small>
+        </div>
       </div>
       <button class='bx bxs-cog bx-spin-hover'
               :class="{hidden: !active}"></button>
-      <!-- span v-if="!active" class="tooltip"> Application one </span -->
+      <span v-if="!active"
+            class="tooltip round-corners fib-8">
+        <strong :class="{online: online}">&#9679;</strong>
+        {{profile.nickname}}
+      </span>
     </div>
   </div>
 </template>
@@ -58,6 +74,7 @@ interface Item {
   id: string,
   name: string,
   img: string,
+  selected: boolean | undefined,
 }
 
 interface Warning {
@@ -76,25 +93,15 @@ export default defineComponent({
   props: {
     initial: Boolean,
     
-    header: {
-      type: Object as () => Header,
-      required: true,
-    },
-
-    items: {
-      type: Object as () => Item[],
-      required: true,
-    },
-
-    profile: {
-      type: Object as () => Profile,
-      required: true,
-    }
+    header: Object as () => Header,
+    items: Object as () => Item[],
+    profile: Object as () => Profile,
   },
 
   data() {
     return {
-      active: this.initial?? false
+      active: this.initial?? false,
+      online: true,
     }
   },
 
@@ -117,9 +124,12 @@ $expanded-width: $fib-12 * 1px;
 $logo-size: $fib-8 * 1px;
 $icon-size: $fib-7 * 1px;
 $bound-margin: $fib-6 * 1px;
+$items-margin: $fib-4 * 1px;
 $text-padding:  $fib-5 * 1px;
 $ident: $fib-6 * 1px;
 $transition-lapse: $fib-8 * 0.01s ease-in-out;
+$selected-background: find-fib-color(emphasis);
+$hover-background: lighten($selected-background, $fib-13 * 0.1%);
 
 .sidebar {
   position: fixed;
@@ -128,12 +138,10 @@ $transition-lapse: $fib-8 * 0.01s ease-in-out;
 
   height: 100%;
   width: $collapsed-width;
-  //overflow: hidden;
 
   top: 0;
   left: 0;
   
-  background: magenta;
   transition: width  $transition-lapse,
               padding-left $transition-lapse;
 
@@ -144,7 +152,7 @@ $transition-lapse: $fib-8 * 0.01s ease-in-out;
   &.active {
     $ident: $ident;
     width: $expanded-width - $ident;
-    padding-left:  $ident;
+    padding-left:  $ident;    
   }
 
   button {
@@ -167,14 +175,19 @@ $transition-lapse: $fib-8 * 0.01s ease-in-out;
   }
 
   .tooltip {
+    cursor:default;
     position: absolute;
     padding: $fib-5 * 1px;
-    padding-left: $fib-6 * 1px;
-    padding-right: $fib-6 * 1px;
-    
-    background: red;
+    padding-left: $ident;
+    padding-right: $ident;
     left: $collapsed-width;
+    background: white;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+    pointer-events: none;
+    white-space: nowrap;
   }
+
+  
 
   .icon-container {
     display: flex;
@@ -212,8 +225,8 @@ $transition-lapse: $fib-8 * 0.01s ease-in-out;
 
   .logo-container {
     display: flex;
-    margin-top: $bound-margin;
     margin-bottom: $bound-margin;
+    min-height: $collapsed-width;
     overflow: hidden;
 
     .logo {
@@ -241,18 +254,55 @@ $transition-lapse: $fib-8 * 0.01s ease-in-out;
     max-width: 0px !important;
   }
 
+  .with-tooltip {
+    .tooltip {
+      width: fit-content;
+      transition: opacity $fib-5 * 0.01s ease-in-out;
+      transition-delay: $fib-3 * 0.01s;
+      opacity: 0%;
+    }
+
+    &:hover {
+      .tooltip {
+        transition-delay: $fib-8 * 0.01s;
+        opacity: 100%;
+      }
+    }
+  }
+
   .nav-items {
     flex: 1;
     list-style: none;
+    margin-left: $items-margin;
+    margin-right: $items-margin;
 
     li {
+      @extend .with-tooltip;
+
       display: flex;
       align-items: center;
       justify-content: space-between;
+      height: $collapsed-width - $items-margin*2;
+
+      &.selected {
+        background-color: $selected-background;
+        
+        :not(.tooltip) {
+          span, i {
+            color: white !important;
+          }
+        }
+      }
+
+      &:not(.selected):hover {
+        background-color: $hover-background;
+      }
 
       button {
         display: flex;
         align-items: center;
+        position: fixed;
+        transform: translateX(-$items-margin);
 
         span {
           max-width: $fib-11 * 1px;
@@ -272,10 +322,22 @@ $transition-lapse: $fib-8 * 0.01s ease-in-out;
     }
   }
 
+  .conn-status {
+    color: find-fib-color(error);
+
+    &.online {
+      color: find-fib-color(success);
+    }
+  }
+
   .profile-container {
+    @extend .with-tooltip;
+
     display: flex;
+    align-items: center;
     margin-top: $bound-margin;
     margin-bottom: $bound-margin;
+    min-height: $collapsed-width;
     overflow: hidden;
 
     .photo {
@@ -312,6 +374,13 @@ $transition-lapse: $fib-8 * 0.01s ease-in-out;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+    }
+
+    .tooltip {
+      margin-bottom: auto;
+      strong {
+        @extend .conn-status
+      }
     }
 
     button {

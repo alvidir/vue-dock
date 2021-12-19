@@ -3,12 +3,6 @@
             :header="header"
             :items="items"
             :profile="profile">
-    <template #under-username>
-      <div class="conn-status">
-          <span>&#9679;</span>
-          <label> online</label>
-      </div>
-    </template>
   </sidebar-menu>
 </template>
 
@@ -31,7 +25,8 @@ export default defineComponent({
 
       profile: {
         picture: "https://gitlab.com/uploads/-/system/user/avatar/2419927/avatar.png?width=400",
-        username: "dummy1234",
+        nickname: "Dummy Dumper",
+        user: "dummy123",
         warning: {
           icon: "bx bxs-bell",
           message: "you got new notifications",
@@ -73,17 +68,6 @@ body {
   position: relative;
   min-height: 100vh;
   width: 100%;
-}
-
-.conn-status {
-  span {
-    color: find-fib-color(success);
-  }
-
-  label {
-    color: find-fib-color(success);
-    font-size: $fib-6 * 1px;
-  }
 }
 
 </style>
