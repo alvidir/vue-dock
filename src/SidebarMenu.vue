@@ -35,13 +35,13 @@
     </ul>
     <div v-if="profile"
          class="profile-container">
-      <div class="photo">
+      <button class="photo">
         <i class="warning-icon"
            v-if="profile.warning"
            :class="profile.warning.icon">
         </i>
         <img :src="profile.picture"/>
-      </div>
+      </button>
       <div class="profile-info">
         <a class="name" href="#"> {{profile.nickname}} </a>
         <div class="conn-status"
@@ -161,7 +161,7 @@ $hover-background: lighten($selected-background, $fib-13 * 0.1%);
     border: none;
     transition: opacity $transition-lapse;
 
-    &.hidden { 
+    &.hidden {
       opacity: 0%;
     }
 
@@ -182,7 +182,9 @@ $hover-background: lighten($selected-background, $fib-13 * 0.1%);
     padding-right: $ident;
     left: $collapsed-width;
     background: white;
-    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+    border-color: find-fib-color(disabled);
+    border: 1px solid;
+    //box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
     pointer-events: none;
     white-space: nowrap;
   }
@@ -307,10 +309,15 @@ $hover-background: lighten($selected-background, $fib-13 * 0.1%);
         span {
           max-width: $fib-11 * 1px;
           transition: opacity  $transition-lapse,
-                      max-width $transition-lapse;
+                      max-width $transition-lapse,
+                      margin-left $transition-lapse;
           
           overflow: hidden;
           text-overflow: ellipsis;
+
+          &.hidden {
+            margin-left: $items-margin*2;
+          }
         }
       }
 
@@ -353,9 +360,11 @@ $hover-background: lighten($selected-background, $fib-13 * 0.1%);
       .warning-icon {
         position: absolute;
         font-size: $fib-7 * 1px;
-
-        bottom: $fib-3 * 1px;
-        right: $fib-3 * 1px;
+        color: find-fib-color(emphasis);
+        background: white;
+        border-radius: 100%;
+        bottom: $fib-4 * 1px;
+        right: $fib-4 * 1px;
       }
 
       img {
