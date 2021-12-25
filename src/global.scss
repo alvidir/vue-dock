@@ -1,0 +1,31 @@
+@use "sass:math";
+@import "fibonacci-styles";
+
+$transition-lapse: $fib-8 * 0.01s ease-in-out !default;
+$non-active-width: $fib-9 * 1px !default;
+$active-width: $fib-12 * 1px !default;
+$ident: $fib-6 * 1px !default;
+
+button {
+    min-width: $non-active-width;
+    min-height: $non-active-width;
+    background: transparent;
+    border: none;
+    padding: 0px;
+
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.hideable {
+    transition: opacity $transition-lapse;
+
+    &.hidden {
+        opacity: 0% !important;
+    }
+}
+
+a {
+    text-decoration: none;
+}
