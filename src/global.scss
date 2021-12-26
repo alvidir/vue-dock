@@ -6,6 +6,10 @@ $non-active-width: $fib-9 * 1px !default;
 $active-width: $fib-12 * 1px !default;
 $ident: $fib-6 * 1px !default;
 
+a {
+    text-decoration: none;
+}
+
 button {
     min-width: $non-active-width;
     min-height: $non-active-width;
@@ -26,6 +30,46 @@ button {
     }
 }
 
-a {
-    text-decoration: none;
+.image-container {
+    display: flex;
+    align-items: center;
+    min-width: $non-active-width;
+    height: $non-active-width;
+
+    img {
+        margin: auto;
+    }
+}
+
+.glass {
+    background: #ffffff55;
+    backdrop-filter: blur($fib-5 * 1px);
+}
+
+.with-tooltip {
+    .tooltip {
+      width: fit-content;
+      transition: opacity $fib-5 * 0.01s ease-in-out;
+      transition-delay: $fib-3 * 0.01s;
+      opacity: 0%;
+    }
+
+    &:hover {
+      .tooltip {
+        opacity: 100%;
+      }
+    }
+}
+
+.tooltip {
+    @extend .round-corners, .fib-5;
+
+    cursor:default;
+    position: absolute;
+    padding: $fib-5 * 1px;
+    padding-left: $ident;
+    padding-right: $ident;
+    pointer-events: none;
+    white-space: nowrap;
+    background: #ffffffbb;
 }
