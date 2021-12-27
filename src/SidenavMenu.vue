@@ -6,7 +6,8 @@
              class="round-corners fib-6">
             <button id="header"
                     @click="onClick(CLICK_ON_LOGO)">
-                <img :src="iconSrc">
+                <img class="bx-tada-hover"
+                     :src="iconSrc">
             </button>
             <div id="body">
                 <slot></slot>
