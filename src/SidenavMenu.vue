@@ -64,7 +64,7 @@ export default defineComponent({
 })
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 @import "global.scss";
 
 $dock-width: $default-width + $ident;

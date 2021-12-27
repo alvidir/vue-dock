@@ -33,7 +33,7 @@ export default defineComponent({
 })
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 @import "global.scss";
 
 .menu-option {
