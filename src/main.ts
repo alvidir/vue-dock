@@ -1,34 +1,34 @@
-import DockMenu from "./DockMenu.vue"
+import SidenavMenu from "./SidenavMenu.vue"
 import MenuOption from "./MenuOption.vue"
 import { defineCustomElement } from "vue"
 
-const DOCK_MENU_TAG = "dock-menu"
+const SIDENAV_MENU_TAG = "sidenav-menu"
 const MENU_OPTION_TAG = "menu-option"
 
 export {
-    DockMenu,
+    SidenavMenu,
     MenuOption
 }
 
 export function include(app: any): any {
-    app.component(DOCK_MENU_TAG, DockMenu)
+    app.component(SIDENAV_MENU_TAG, SidenavMenu)
        .component(MENU_OPTION_TAG, MenuOption)
 }
 
 // Remember to format all SFC names as *.ce.vue to include its styles into the web component
 // see: https://v3.vuejs.org/guide/web-components.html
 
-const ElementDockMenu = defineCustomElement(DockMenu)
+const ElementSidenavMenu = defineCustomElement(SidenavMenu)
 const ElementMenuOption = defineCustomElement(MenuOption)
 
 
 export {
-    ElementDockMenu,
+    ElementSidenavMenu,
     ElementMenuOption,
 };
 
 
 export function register() {
-    customElements.define(DOCK_MENU_TAG, ElementDockMenu)
+    customElements.define(SIDENAV_MENU_TAG, ElementSidenavMenu)
     customElements.define(MENU_OPTION_TAG, ElementMenuOption)
 }

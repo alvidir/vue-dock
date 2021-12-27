@@ -1,5 +1,6 @@
 <template>
-    <button class="menu-option">
+    <button class="menu-option"
+            @click="onClick">
         <div class="icon-container">
             <slot></slot>
         </div>
@@ -10,14 +11,25 @@
 <script lang="ts">
 import { defineComponent } from "vue"
 
+const CLICK_EVENT = "click";
+
 export default defineComponent({
     name: "MenuOption",
+    
+    emits: [CLICK_EVENT],
+
     props: {
         id: String,
         title: String,
         iconSrc: String,
         selected: Boolean,
     },
+
+    methods: {
+        onClick() {
+            this.$emit(CLICK_EVENT, this.id)
+        }
+    }
 })
 </script>
 
@@ -27,15 +39,15 @@ export default defineComponent({
 .menu-option {
     display: flex;
     align-items: center;
-    min-height: $non-active-width;
-    min-width: $non-active-width;
+    min-height: $default-width;
+    min-width: $default-width;
 
     .icon-container {
         display: flex;
         align-items: center;
     
-        height: $non-active-width;
-        min-width: $non-active-width;
+        height: $default-width;
+        min-width: $default-width;
     }
 
     img {

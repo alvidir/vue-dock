@@ -4,7 +4,8 @@
         <div class="separator"></div>
         <div id="dock"
              class="round-corners fib-6">
-            <button id="header">
+            <button id="header"
+                    @click="onClick(CLICK_ON_LOGO)">
                 <img :src="iconSrc">
             </button>
             <div id="body">
@@ -12,7 +13,8 @@
             </div>
             <div class="divider"></div>
             <div id="footer">
-                <button class="with-tooltip">
+                <button class="with-tooltip"
+                        @click="onClick(CLICK_ON_PROFILE)">
                     <img :src="session.picture">
                     <span class="tooltip round-corners fib-8">
                         <strong>&#9679;</strong>
@@ -28,8 +30,15 @@
 <script lang="ts">
 import { defineComponent, inject } from "vue"
 
+const CLICK_EVENT = "click"
+export const CLICK_ON_LOGO = "logo"
+export const CLICK_ON_PROFILE = "profile"
+
 export default defineComponent({
-    name: "DockMenu",
+    name: "Sidenav",
+
+    emits: [CLICK_EVENT],
+
     props: {
         title: String,
         iconSrc: String,
@@ -40,19 +49,27 @@ export default defineComponent({
         const session = inject('session')
 
         return {
-        session
+            session,
+            CLICK_ON_LOGO,
+            CLICK_ON_PROFILE
         }
     },
+
+    methods: {
+        onClick(origin: string) {
+            this.$emit(CLICK_EVENT, origin)
+        }
+    }
 })
 </script>
 
 <style lang="scss">
 @import "global.scss";
 
-$dock-width: $non-active-width + $ident;
-$dock-icon-size: $non-active-width - $ident;
+$dock-width: $default-width + $ident;
+$dock-icon-size: $default-width - $ident;
 $dock-items-separation: golden-ratio($ident, des);
-$dock-button-size: $non-active-width;
+$dock-button-size: $default-width;
 $dock-inner-margin: $fib-4 * 1px;
 
 .dock-container {
@@ -65,15 +82,12 @@ $dock-inner-margin: $fib-4 * 1px;
     padding-right: $dock-inner-margin;
 
     &:not(.active) {
-        $non-active-translation: $dock-width+$dock-inner-margin;
-        transition: transform $transition-lapse,
-                    opacity $transition-lapse;
+        $non-active-translation: $dock-width+$dock-inner-margin + $fib-3*1px;
+        transition: transform $transition-lapse;
         
         transform: translate(-$non-active-translation);
-        opacity: 0%;
 
         &:hover {
-            opacity: 100%;
             transform: translate(0);
         }
 
@@ -151,7 +165,7 @@ $dock-inner-margin: $fib-4 * 1px;
         height: $dock-button-size;
         width: $dock-button-size;
 
-        transition: background  $fib-7 * 0.01s ease-in-out;
+        transition: background $fib-7 * 0.01s ease-in-out;
 
         &:hover {
             background: #ffffff55;
