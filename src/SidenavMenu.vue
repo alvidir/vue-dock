@@ -4,24 +4,28 @@
         <div class="separator"></div>
         <div id="dock"
              class="round-corners fib-6">
-            <button id="header"
-                    @click="onClick(CLICK_ON_LOGO)">
-                <img class="bx-tada-hover"
-                     :src="iconSrc">
-            </button>
+            <slot name="header">
+                <button id="header"
+                        @click="onClick(CLICK_ON_LOGO)">
+                    <img class="bx-tada-hover"
+                        :src="iconSrc">
+                </button>
+            </slot>
             <div id="body">
                 <slot></slot>
             </div>
             <div class="divider"></div>
             <div id="footer">
-                <button class="with-tooltip"
-                        @click="onClick(CLICK_ON_PROFILE)">
-                    <img :src="session.picture">
-                    <span class="tooltip round-corners fib-8">
-                        <strong>&#9679;</strong>
-                        &nbsp;{{session.nickname}}
-                    </span>
-                </button>
+                <slot name="footer">
+                    <button class="with-tooltip"
+                            @click="onClick(CLICK_ON_PROFILE)">
+                        <img :src="session.picture">
+                        <span class="tooltip round-corners fib-8">
+                            <strong>&#9679;</strong>
+                            &nbsp;{{session.nickname}}
+                        </span>
+                    </button>
+                </slot>
             </div>
         </div>
         <div class="separator"></div>
@@ -64,7 +68,7 @@ export default defineComponent({
 })
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 @import "global.scss";
 
 $dock-width: $default-width + $ident;
