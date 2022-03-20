@@ -2,7 +2,9 @@
     <button class="menu-option"
             @click="onClick">
         <div class="icon-container">
-            <slot></slot>
+            <slot>
+                <img :src="iconSrc">
+            </slot>
         </div>
         <span> {{title}} </span>
     </button>

@@ -14,8 +14,10 @@
             <div id="body">
                 <slot></slot>
             </div>
-            <div class="divider"></div>
-            <div id="footer">
+            <div class="divider"
+                 v-if="session"></div>
+            <div id="footer"
+                 v-if="session">
                 <slot name="footer">
                     <button class="with-tooltip"
                             @click="onClick(CLICK_ON_PROFILE)">
@@ -116,7 +118,7 @@ $dock-inner-margin: $fib-4 * 1px;
     min-height: fit-content;
     width: 100%;
     border: 1px solid;
-    border-color: #ffffff55;
+    border-color: var(--color-text-disabled);
 
     #header {
         max-width: $dock-width;
@@ -173,11 +175,11 @@ $dock-inner-margin: $fib-4 * 1px;
         transition: background $fib-7 * 0.01s ease-in-out;
 
         &:hover {
-            background: #ffffff55;
+            background: var(--color-background-disabled);
         }
 
         &:hover:active {
-            background: #ffffffaa;
+            background: var(--color-text-disabled);
         }
     
         img {

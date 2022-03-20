@@ -41,7 +41,7 @@ button {
 }
 
 .glass {
-    background: #ffffff55;
+    background: var(--color-background-primary);
     backdrop-filter: blur($fib-5 * 1px);
 }
 
