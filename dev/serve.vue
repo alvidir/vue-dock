@@ -1,7 +1,8 @@
 <template>
   <sidenav-menu title="Sidenav menu"
                 icon-src="https://cdn.iconscout.com/icon/free/png-256/vue-282497.png"
-                :active="true">
+                :profile="profile"
+                :active="false">
     <menu-option id="photosjop"
                  title="Photoshop"
                  icon-src="https://www.computerhope.com/issues/pictures/photoshop-300.png"
@@ -32,7 +33,12 @@ export default defineComponent({
   },
 
   data() {
-    return {}
+    return {
+      profile: {
+        picture: "https://secure.gravatar.com/avatar/45df7687ab93fe5d5a54f274c3ac05e1?s=800&d=identicon",
+        nickname: "Dummy Dumper"
+      }
+    }
   },
 
   methods: {},

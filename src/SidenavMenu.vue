@@ -1,45 +1,54 @@
 <template>
     <div class="dock-container"
          :class="{active: active}">
+        
         <div class="separator"></div>
-        <div id="dock"
-             class="round-corners fib-6">
+
+        <div class="dock round-corners fib-6">
+
             <slot name="header">
                 <button id="header"
                         @click="onClick(CLICK_ON_LOGO)">
-                    <img class="bx-tada-hover"
-                        :src="iconSrc">
+                    <img :src="iconSrc">
                 </button>
             </slot>
+
             <div id="body">
                 <slot></slot>
             </div>
-            <div class="divider"
-                 v-if="session"></div>
+            
+            <div v-if="profile" class="divider"></div>
+
             <div id="footer"
-                 v-if="session">
+                 v-if="profile">
                 <slot name="footer">
                     <button class="with-tooltip"
                             @click="onClick(CLICK_ON_PROFILE)">
-                        <img :src="session.picture">
+                        <img :src="profile.picture">
                         <span class="tooltip round-corners fib-8">
                             <strong>&#9679;</strong>
-                            &nbsp;{{session.nickname}}
+                            &nbsp;{{profile.nickname}}
                         </span>
                     </button>
                 </slot>
             </div>
         </div>
+
         <div class="separator"></div>
     </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, inject } from "vue"
+import { defineComponent, PropType, inject } from "vue"
 
 const CLICK_EVENT = "click"
 export const CLICK_ON_LOGO = "logo"
 export const CLICK_ON_PROFILE = "profile"
+
+export interface ProfileInterface {
+    picture: string,
+    nickname: string,
+}
 
 export default defineComponent({
     name: "Sidenav",
@@ -50,13 +59,11 @@ export default defineComponent({
         title: String,
         iconSrc: String,
         active: Boolean,
+        profile: Object as PropType<ProfileInterface>
     },
 
     setup() {
-        const session = inject('session')
-
         return {
-            session,
             CLICK_ON_LOGO,
             CLICK_ON_PROFILE
         }
@@ -75,7 +82,8 @@ export default defineComponent({
 
 $dock-width: $default-width + $ident;
 $dock-icon-size: $default-width - $ident;
-$dock-items-separation: golden-ratio($ident, des);
+$dock-header-margin: $ident * $FIB_RATIO;
+$dock-items-separation: calc($ident / $FIB_RATIO);
 $dock-button-size: $default-width;
 $dock-inner-margin: $fib-4 * 1px;
 
@@ -109,7 +117,7 @@ $dock-inner-margin: $fib-4 * 1px;
     width: 100%;
 }
 
-#dock {
+.dock {
     @extend .glass;
 
     display: flex;
@@ -123,8 +131,8 @@ $dock-inner-margin: $fib-4 * 1px;
     #header {
         max-width: $dock-width;
         min-height: $dock-width;
-        margin-top: $dock-items-separation;
-        margin-bottom: $dock-items-separation;
+        margin-top: $dock-header-margin;
+        margin-bottom: $dock-header-margin;
 
         img {
             margin: auto;
@@ -175,11 +183,11 @@ $dock-inner-margin: $fib-4 * 1px;
         transition: background $fib-7 * 0.01s ease-in-out;
 
         &:hover {
-            background: var(--color-background-disabled);
+            background: var(--color-highlight);
         }
 
         &:hover:active {
-            background: var(--color-text-disabled);
+            background: var(--color-background-primary);
         }
     
         img {
@@ -193,7 +201,7 @@ $dock-inner-margin: $fib-4 * 1px;
 
     .divider {
         height: $fib-1 * 1px;
-        background: #ffffff88;
+        background: var(--color-text-disabled);
         margin-left: $dock-items-separation;
         margin-right: $dock-items-separation;
     }
