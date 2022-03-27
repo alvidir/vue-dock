@@ -1,12 +1,16 @@
 <template>
     <button class="menu-option"
             @click="onClick">
-        <div class="icon-container">
-            <slot>
+        <div class="icon">
+            <slot name="icon">
                 <img :src="iconSrc">
             </slot>
         </div>
-        <span> {{title}} </span>
+        <div class="title">
+            <slot>
+                <label> {{title}} </label>
+            </slot>
+        </div>
     </button>
 </template>
 
@@ -40,16 +44,26 @@ export default defineComponent({
 
 .menu-option {
     display: flex;
-    align-items: center;
+    flex-direction: row;
     min-height: $default-width;
     min-width: $default-width;
 
-    .icon-container {
+    .icon {
         display: flex;
-        align-items: center;
-    
         height: $default-width;
         min-width: $default-width;
+    }
+
+    .title {
+        pointer-events: none;
+        margin-top: auto;
+        margin-bottom: auto;
+    }
+
+    label {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        font-size:  1rem;
     }
 
     img {
@@ -62,12 +76,6 @@ export default defineComponent({
         width: 100%;
         font-size: $fib-7 * 1px;
         text-align: center;
-    }
-
-    span {
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        font-size:  1rem;
     }
 }
 </style>

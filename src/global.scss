@@ -27,34 +27,15 @@ button {
     }
 }
 
-.image-container {
-    display: flex;
-    align-items: center;
-    min-width: $default-width;
-    height: $default-width;
-
-    img {
-        margin: auto;
-    }
-}
-
-.glass {
-    background: var(--color-background-primary);
-    backdrop-filter: blur($fib-5 * 1px);
-}
-
 .with-tooltip {
     .tooltip {
-      width: fit-content;
       transition: opacity $fib-5 * 0.01s ease-in-out;
       transition-delay: $fib-3 * 0.01s;
       opacity: 0%;
     }
 
-    &:hover {
-      .tooltip {
+    &:hover .tooltip {
         opacity: 100%;
-      }
     }
 }
 
@@ -62,7 +43,6 @@ button {
     @extend .round-corners, .fib-5;
 
     cursor:default;
-    position: absolute;
     padding: $fib-5 * 1px;
     padding-left: $ident;
     padding-right: $ident;

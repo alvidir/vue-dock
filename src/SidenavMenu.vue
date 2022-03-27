@@ -7,29 +7,29 @@
         <div class="dock round-corners fib-6">
 
             <slot name="header">
-                <button id="header"
+                <button class="header"
                         @click="onClick(CLICK_ON_LOGO)">
                     <img :src="iconSrc">
                 </button>
             </slot>
 
-            <div id="body">
+            <div class="body">
                 <slot></slot>
             </div>
             
             <div v-if="profile" class="divider"></div>
 
-            <div id="footer"
+            <div class="footer"
                  v-if="profile">
                 <slot name="footer">
-                    <button class="with-tooltip"
-                            @click="onClick(CLICK_ON_PROFILE)">
-                        <img :src="profile.picture">
-                        <span class="tooltip round-corners fib-8">
+                    <menu-option id="profile"
+                                :icon-src="profile.picture"
+                                :selected="false">
+                        <label class="round-corners fib-8">
                             <strong>&#9679;</strong>
                             &nbsp;{{profile.nickname}}
-                        </span>
-                    </button>
+                        </label>
+                    </menu-option>     
                 </slot>
             </div>
         </div>
@@ -39,7 +39,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, inject } from "vue"
+import { defineComponent, PropType } from "vue"
 
 const CLICK_EVENT = "click"
 export const CLICK_ON_LOGO = "logo"
@@ -91,8 +91,8 @@ $dock-inner-margin: $fib-4 * 1px;
     position: fixed;
     display: flex;
     flex-direction: column;
+    height: 100%;
     width: $dock-width;
-    height: 100% !important;
     padding-left: $dock-inner-margin;
     padding-right: $dock-inner-margin;
 
@@ -118,17 +118,17 @@ $dock-inner-margin: $fib-4 * 1px;
 }
 
 .dock {
-    @extend .glass;
-
     display: flex;
     flex-direction: column;
     flex: 1;
-    min-height: fit-content;
     width: 100%;
+    height: 100%;
+    //min-height: ($fib-12 + $fib-6) * 1px;
     border: 1px solid;
     border-color: var(--color-text-disabled);
+    background: var(--color-background-primary);
 
-    #header {
+    .header {
         max-width: $dock-width;
         min-height: $dock-width;
         margin-top: $dock-header-margin;
@@ -141,10 +141,13 @@ $dock-inner-margin: $fib-4 * 1px;
         }
     }
 
-    #body {
-        display: flex;
-        flex-direction: column;
+    .body {
         flex: 1;
+        //min-height: $dock-button-size;
+        //overflow-y: auto;
+
+        //-ms-overflow-style: none;  /* IE and Edge */
+        //scrollbar-width: none;  /* Firefox */
 
         button {
             margin-left: auto;
@@ -153,9 +156,13 @@ $dock-inner-margin: $fib-4 * 1px;
         }
     }
 
-    #footer {
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    // .body::-webkit-scrollbar {
+    //    display: none;
+    // }
+
+    .footer {
         display: flex;
-        align-items: center;
         width: $dock-width;
         height: $dock-width;
 
@@ -167,16 +174,15 @@ $dock-inner-margin: $fib-4 * 1px;
             font-size: 1rem !important;
         }
 
-        .tooltip {
+        label {
             left: $dock-width + $ident;
         }
     }
 
-    #body button, #footer button {
+    .body button, .footer button {
         @extend .round-corners, .fib-6;
 
         display: flex;
-        align-items: center;
         height: $dock-button-size;
         width: $dock-button-size;
 
@@ -210,13 +216,17 @@ $dock-inner-margin: $fib-4 * 1px;
     .menu-option {
         @extend .with-tooltip;
 
+        .title {
+            pointer-events: none;
+        }
+
         i {
             font-size: $fib-8*1px;
         }
 
-        span {
+        label {
             @extend .tooltip;
-            left: $dock-width + $ident;
+            margin-left: $ident;
             font-size: $fib-6 * 1px;
         }
     }

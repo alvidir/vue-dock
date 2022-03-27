@@ -2,7 +2,7 @@
   <sidenav-menu title="Sidenav menu"
                 icon-src="https://cdn.iconscout.com/icon/free/png-256/vue-282497.png"
                 :profile="profile"
-                :active="false">
+                :active="true">
     <menu-option id="photosjop"
                  title="Photoshop"
                  icon-src="https://www.computerhope.com/issues/pictures/photoshop-300.png"
@@ -22,15 +22,10 @@
 </template>
 
 <script lang="ts">
-import SidenavMenu from '@/SidenavMenu.vue';
 import { defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'ServeDev',
-
-  components: {
-    SidenavMenu
-  },
 
   data() {
     return {
