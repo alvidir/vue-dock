@@ -1,4 +1,6 @@
 <template>
+    <span class="padding"
+         :class="{active: active}"></span>
     <div class="dock-container"
          :class="{active: active}">
         
@@ -86,6 +88,15 @@ $dock-header-margin: $ident * $FIB_RATIO;
 $dock-items-separation: calc($ident / $FIB_RATIO);
 $dock-button-size: $default-width;
 $dock-inner-margin: $fib-4 * 1px;
+
+.padding {
+    width: $dock-width + 2 * $dock-inner-margin;
+    transition: width $transition-lapse;
+
+    &:not(.active) {
+        width: 0px;
+    }
+}
 
 .dock-container {
     position: fixed;

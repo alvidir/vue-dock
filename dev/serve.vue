@@ -2,7 +2,7 @@
   <sidenav-menu title="Sidenav menu"
                 icon-src="https://cdn.iconscout.com/icon/free/png-256/vue-282497.png"
                 :profile="profile"
-                :active="true">
+                :active="false">
     <menu-option id="photosjop"
                  title="Photoshop"
                  icon-src="https://www.computerhope.com/issues/pictures/photoshop-300.png"
@@ -19,6 +19,9 @@
                  :selected="false">
     </menu-option>              
   </sidenav-menu>
+  <h1>
+    Hello world
+  </h1>
 </template>
 
 <script lang="ts">
