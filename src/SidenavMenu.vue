@@ -202,10 +202,6 @@ $dock-inner-margin: $fib-4 * 1px;
         &:hover {
             background: var(--color-highlight);
         }
-
-        &:hover:active {
-            background: var(--color-background-primary);
-        }
     
         img {
             @extend .round-corners, .fib-5;

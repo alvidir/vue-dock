@@ -2,11 +2,11 @@
   <sidenav-menu title="Sidenav menu"
                 icon-src="https://cdn.iconscout.com/icon/free/png-256/vue-282497.png"
                 :profile="profile"
-                :active="false">
+                :active="true">
     <menu-option id="photosjop"
                  title="Photoshop"
                  icon-src="https://www.computerhope.com/issues/pictures/photoshop-300.png"
-                 :selected="false">
+                 :selected="true">
     </menu-option>
     <menu-option id="aftereffects"
                  title="Affter effects"
@@ -47,7 +47,7 @@ export default defineComponent({
 @import "fibonacci-styles";
 
 * {
-  @extend .theme-dark;
+  @extend .theme-light;
 
   margin: 0;
   padding: 0;
