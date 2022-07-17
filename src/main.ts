@@ -1,15 +1,16 @@
-import SidenavMenu from "./SidenavMenu.vue"
-import MenuOption from "./MenuOption.vue"
+/* eslint-disable */
+import Dock from "./Dock.vue"
+import DockItem from "./DockItem.vue"
 
-const SIDENAV_MENU_TAG = "sidenav-menu"
-const MENU_OPTION_TAG = "menu-option"
+const DOCK_TAG = "dock"
+const DOCK_ITEM_TAG = "dock-item"
 
 export {
-    SidenavMenu,
-    MenuOption
+    Dock,
+    DockItem
 }
 
 export function include(app: any): any {
-    app.component(SIDENAV_MENU_TAG, SidenavMenu)
-       .component(MENU_OPTION_TAG, MenuOption)
+    app.component(DOCK_TAG, Dock)
+       .component(DOCK_ITEM_TAG, DockItem)
 }

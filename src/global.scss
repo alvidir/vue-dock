@@ -2,12 +2,6 @@
 @import "fibonacci-styles";
 
 $transition-lapse: $fib-8 * 0.01s ease-in-out !default;
-$default-width: $fib-9 * 1px !default;
-$ident: $fib-6 * 1px !default;
-
-a {
-    text-decoration: none;
-}
 
 button { 
     background: transparent;
@@ -25,30 +19,4 @@ button {
     &.hidden {
         opacity: 0% !important;
     }
-}
-
-.with-tooltip {
-    .tooltip {
-      transition: opacity $fib-5 * 0.01s ease-in-out;
-      transition-delay: $fib-3 * 0.01s;
-      opacity: 0%;
-    }
-
-    &:hover .tooltip {
-        opacity: 100%;
-    }
-}
-
-.tooltip {
-    @extend .round-corners, .fib-5;
-
-    cursor:default;
-    padding: $fib-5 * 1px;
-    padding-left: $ident;
-    padding-right: $ident;
-    pointer-events: none;
-    white-space: nowrap;
-    background: var(--color-background-primary);
-    border: 1px solid var(--color-text-disabled);
-    color: var(--color-text);
 }
