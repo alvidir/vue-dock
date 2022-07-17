@@ -41,6 +41,7 @@
 </template>
 
 <script lang="ts">
+/* eslint-disable */
 import { defineComponent, PropType } from "vue"
 
 const CLICK_EVENT = "click"
