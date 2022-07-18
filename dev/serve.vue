@@ -1,7 +1,6 @@
 <template>
-  <dock class="absolute"
-       :orientation="'vertical'"
-       :active="true">      
+  <dock :orientation="'horizontal'"
+        :active="true">      
   </dock>
   <h1>
     whats up world!

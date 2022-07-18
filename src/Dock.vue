@@ -34,50 +34,38 @@ export default defineComponent({
 @import "global.scss";
 
 $dock-size: $fib-9 * 1px;
-$inner-ident: $fib-4 * 1px;
-$ident: $fib-6 * 1px;
-
-.absolute.dock-container {
-    position: fixed;
-
-    &.vertical {
-        height: 100vh !important;
-    }
-
-    &.horizontal {
-        width: 100vw !important;
-    }
-}
+$ident: $fib-4 * 1px;
 
 .dock-container {
     display: flex;
+    box-sizing: border-box;
     justify-content: center;
+    position: fixed;
+    padding: $ident;
     z-index: 1;
 
     &.vertical {
-        width: $dock-size + $ident;
-        height: fit-content;
-        max-height: 100vh;
+        width: $dock-size + 2*$ident;
+        height: 100vh;
 
         .dock {
             flex-direction: column;
-            width: $dock-size - 2*$inner-ident;
+            width: $dock-size;
             height: fit-content;
             max-height: 90vh;
         }
     }
 
     &.horizontal {
-        width: fit-content;
-        max-width: 100vw;
-        height: $dock-size + $ident;
+        width: 100vw;
+        height: $dock-size + 2*$ident;
         bottom: 0;
 
         .dock {
             flex-direction: row;
             width: fit-content;
             max-width: 90vw;
-            height: $dock-size - 2*$inner-ident;
+            height: $dock-size;
         }
     }
 
@@ -87,7 +75,8 @@ $ident: $fib-6 * 1px;
         border-radius: $fib-6 * 1px;
         background: var(--color-background-primary);
         border: 1px solid var(--color-scrollbar);
-        padding: $inner-ident;
+        box-sizing: border-box;
+        padding: $ident;
     }
 }
 </style>
