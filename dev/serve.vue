@@ -1,6 +1,9 @@
 <template>
-  <dock :position="'bottom'"
-        :active="true">      
+  <dock :active="true"
+        :position="'bottom'">
+    <dock-item></dock-item>
+    <dock-item></dock-item>
+    <dock-item></dock-item>
   </dock>
   <h1>
     whats up world!
@@ -25,7 +28,7 @@ export default defineComponent({
 @import "fibonacci-styles";
 
 * {
-  @extend .theme-dark;
+  @extend .theme-light;
 
   margin: 0;
   padding: 0;

@@ -1,5 +1,7 @@
 <template>
-    <h1>hello world</h1>
+    <div class="dock-item tooltip top">
+        <span class="tooltip-text">Tooltip text</span>
+    </div>
 </template>
 
 <script lang="ts">
@@ -11,6 +13,7 @@ export default defineComponent({
 
     props: {
         selected: Boolean,
+        placeholder: String,
     },
 
     methods: {
@@ -21,5 +24,12 @@ export default defineComponent({
 <style lang="scss">
 @import "global.scss";
 
+.dock-item {
+    border-radius: $fib-5 * 1px;
+    aspect-ratio: 1 / 1;
 
+    &:hover {
+        background: var(--color-button);
+    }
+}
 </style>

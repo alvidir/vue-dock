@@ -1,8 +1,8 @@
 <template>
     <div class="dock-container"
-        :class="position?? DockPosition.LEFT">
+        :class="position">
         <div class="dock">
-            <span>h</span>
+            <slot></slot>
         </div>
     </div>
 </template>
@@ -24,12 +24,9 @@ export default defineComponent({
 
     props: {
         active: Boolean,
-        position: String as PropType<DockPosition>,
-    },
-
-    setup() {
-        return {
-            DockPosition,
+        position: {
+            type: String as PropType<DockPosition>,
+            default: DockPosition.LEFT,
         }
     },
 
@@ -62,6 +59,10 @@ $ident: $fib-4 * 1px;
             max-width: 90vw;
             height: $dock-size;
         }
+
+        .dock-item {
+            height: 100%;
+        }
     }
 
     &.left {
@@ -73,6 +74,10 @@ $ident: $fib-4 * 1px;
             width: $dock-size;
             height: fit-content;
             max-height: 90vh;
+        }
+
+        .dock-item {
+            width: 100%;
         }
     }
 
@@ -87,6 +92,7 @@ $ident: $fib-4 * 1px;
     }
 
     .dock {
+        display: flex;
         margin-top: auto;
         margin-bottom: auto;
         border-radius: $fib-6 * 1px;
