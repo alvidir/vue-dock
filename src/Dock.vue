@@ -1,6 +1,6 @@
 <template>
     <div class="dock-container"
-        :class="orientation?? 'horizontal'">
+        :class="position?? DockPosition.LEFT">
         <div class="dock">
             <span>h</span>
         </div>
@@ -10,9 +10,11 @@
 <script lang="ts">
 import { defineComponent, PropType } from "vue"
 
-export enum DockOrientation {
-    VERTICAL = "vertical",
-    HORIZONTAL = "horizontal",
+export enum DockPosition {
+    TOP = "top",
+    RIGHT = "right",
+    BOTTOM = "bottom",
+    LEFT = "left",
 }
 
 export default defineComponent({
@@ -22,7 +24,13 @@ export default defineComponent({
 
     props: {
         active: Boolean,
-        orientation: String as PropType<DockOrientation>,
+        position: String as PropType<DockPosition>,
+    },
+
+    setup() {
+        return {
+            DockPosition,
+        }
     },
 
     methods: {
@@ -44,7 +52,19 @@ $ident: $fib-4 * 1px;
     padding: $ident;
     z-index: 1;
 
-    &.vertical {
+    &.top {
+        width: 100vw;
+        height: $dock-size + 2*$ident;
+
+        .dock {
+            flex-direction: row;
+            width: fit-content;
+            max-width: 90vw;
+            height: $dock-size;
+        }
+    }
+
+    &.left {
         width: $dock-size + 2*$ident;
         height: 100vh;
 
@@ -56,17 +76,14 @@ $ident: $fib-4 * 1px;
         }
     }
 
-    &.horizontal {
-        width: 100vw;
-        height: $dock-size + 2*$ident;
+    &.bottom {
+        @extend .top;
         bottom: 0;
+    }
 
-        .dock {
-            flex-direction: row;
-            width: fit-content;
-            max-width: 90vw;
-            height: $dock-size;
-        }
+    &.right {
+        @extend .left;
+        right: 0;
     }
 
     .dock {

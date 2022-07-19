@@ -1,5 +1,5 @@
 <template>
-  <dock :orientation="'horizontal'"
+  <dock :position="'bottom'"
         :active="true">      
   </dock>
   <h1>
