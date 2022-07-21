@@ -40,8 +40,10 @@ export default defineComponent({
 
 $dock-size: $fib-9 * 1px;
 $ident: $fib-4 * 1px;
+$tooltip-ident: 3*$ident;
 
 .dock-container {
+    
     display: flex;
     box-sizing: border-box;
     justify-content: center;
@@ -63,6 +65,10 @@ $ident: $fib-4 * 1px;
         .dock-item {
             height: 100%;
         }
+
+        .tooltip-text {
+            transform: translateY($tooltip-ident) !important;
+        }
     }
 
     &.left {
@@ -79,16 +85,28 @@ $ident: $fib-4 * 1px;
         .dock-item {
             width: 100%;
         }
+
+        .tooltip-text {
+            transform: translateX($tooltip-ident) !important;
+        }
     }
 
     &.bottom {
         @extend .top;
         bottom: 0;
+
+        .tooltip-text {
+            transform: translateY(-$tooltip-ident) !important;
+        }
     }
 
     &.right {
         @extend .left;
         right: 0;
+
+        .tooltip-text {
+            transform: translateX(-$tooltip-ident) !important;
+        }
     }
 
     .dock {

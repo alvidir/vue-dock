@@ -1,6 +1,6 @@
 <template>
     <div class="dock-item tooltip top">
-        <span class="tooltip-text">Tooltip text</span>
+        <label class="tooltip-text">Tooltip text</label>
     </div>
 </template>
 
