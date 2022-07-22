@@ -1,6 +1,6 @@
 <template>
     <div class="dock-container"
-        :class="position">
+        :class="dockContainerClass">
         <div class="dock">
             <slot></slot>
         </div>
@@ -8,14 +8,31 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from "vue"
+import { defineComponent, PropType, reactive, provide, computed } from "vue"
+import { Orientation } from "./DockSeparator.vue"
 
-export enum DockPosition {
+export enum Position {
     TOP = "top",
     RIGHT = "right",
     BOTTOM = "bottom",
     LEFT = "left",
 }
+
+export const ReversePosition: {[key: string]: Position} = {
+    [Position.TOP]: Position.BOTTOM,
+    [Position.RIGHT]: Position.LEFT,
+    [Position.BOTTOM]: Position.TOP,
+    [Position.LEFT]: Position.RIGHT,
+}
+
+const PositionOrientation: {[key: string]: Orientation} = {
+    [Position.TOP]: Orientation.HORIZONTAL,
+    [Position.RIGHT]: Orientation.VERTICAL,
+    [Position.BOTTOM]: Orientation.HORIZONTAL,
+    [Position.LEFT]: Orientation.VERTICAL,
+}
+
+export const SETTINGS_KEY = "settings"
 
 export default defineComponent({
     // eslint-disable-next-line
@@ -25,12 +42,37 @@ export default defineComponent({
     props: {
         active: Boolean,
         position: {
-            type: String as PropType<DockPosition>,
-            default: DockPosition.LEFT,
+            type: String as PropType<Position>,
+            default: Position.LEFT,
         }
     },
 
-    methods: {
+    setup() {
+        const settings: {[key: string]: string} = {
+            position: Position.RIGHT,
+            orientation: PositionOrientation[Position.RIGHT]
+        }
+        
+        provide(SETTINGS_KEY, reactive(settings))
+
+        return {
+            settings
+        }
+    },
+
+    created() {
+        this.settings.position = ReversePosition[this.position]
+        this.settings.orientation = PositionOrientation[this.position]
+    },
+
+    computed: {
+        dockContainerClass(): string {
+            return `${this.position} ${this.active? 'active' : null}`
+        },
+
+        orientation(): Orientation {
+            return PositionOrientation[this.position]
+        }
     }
 })
 </script>
@@ -38,22 +80,58 @@ export default defineComponent({
 <style lang="scss">
 @import "global.scss";
 
-$dock-size: $fib-9 * 1px;
-$ident: $fib-4 * 1px;
-$tooltip-ident: 3*$ident;
-
 .dock-container {
-    
     display: flex;
     box-sizing: border-box;
     justify-content: center;
     position: fixed;
-    padding: $ident;
+    padding: $dock-ident;
     z-index: 1;
+
+    $translate: -$dock-size -$dock-ident;
+
+    &:not(.active) {
+        &:not(.bottom).top {
+            top: $translate !important;
+            transition: top $dock-transition-lapse;
+
+            &:hover {
+                top: 0 !important;
+            }
+        }
+
+        &:not(.right).left {
+            left: $translate;
+            transition: left $dock-transition-lapse;
+
+            &:hover {
+                left: 0;
+            }
+        }
+
+        &.bottom {
+            bottom: $translate !important;
+            transition: bottom $dock-transition-lapse;
+
+            &:hover {
+                bottom: 0 !important;
+            }
+        }
+
+        &.right {
+            right: $translate !important;
+            transition: right $dock-transition-lapse;
+
+            &:hover {
+                right: 0 !important;
+            }
+        }
+        
+    }
 
     &.top {
         width: 100vw;
-        height: $dock-size + 2*$ident;
+        height: $dock-size + 2*$dock-ident;
 
         .dock {
             flex-direction: row;
@@ -67,12 +145,12 @@ $tooltip-ident: 3*$ident;
         }
 
         .tooltip-text {
-            transform: translateY($tooltip-ident) !important;
+            transform: translateY($dock-tooltip-ident) !important;
         }
     }
 
     &.left {
-        width: $dock-size + 2*$ident;
+        width: $dock-size + 2*$dock-ident;
         height: 100vh;
 
         .dock {
@@ -87,7 +165,7 @@ $tooltip-ident: 3*$ident;
         }
 
         .tooltip-text {
-            transform: translateX($tooltip-ident) !important;
+            transform: translateX($dock-tooltip-ident) !important;
         }
     }
 
@@ -96,7 +174,7 @@ $tooltip-ident: 3*$ident;
         bottom: 0;
 
         .tooltip-text {
-            transform: translateY(-$tooltip-ident) !important;
+            transform: translateY(-$dock-tooltip-ident) !important;
         }
     }
 
@@ -105,7 +183,7 @@ $tooltip-ident: 3*$ident;
         right: 0;
 
         .tooltip-text {
-            transform: translateX(-$tooltip-ident) !important;
+            transform: translateX(-$dock-tooltip-ident) !important;
         }
     }
 
@@ -117,7 +195,8 @@ $tooltip-ident: 3*$ident;
         background: var(--color-background-primary);
         border: 1px solid var(--color-scrollbar);
         box-sizing: border-box;
-        padding: $ident;
+        padding: $dock-ident;
+        min-height: fit-content !important;
     }
 }
 </style>

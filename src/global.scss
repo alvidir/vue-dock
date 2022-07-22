@@ -1,7 +1,10 @@
 @use "sass:math";
 @import "fibonacci-styles";
 
-$transition-lapse: $fib-8 * 0.01s ease-in-out !default;
+$dock-transition-lapse: $fib-7 * 0.01s ease-in-out !default;
+$dock-size: $fib-9 * 1px;
+$dock-ident: $fib-4 * 1px;
+$dock-tooltip-ident: 3*$dock-ident;
 
 button { 
     background: transparent;
@@ -10,13 +13,5 @@ button {
 
     &:hover {
         cursor: pointer;
-    }
-}
-
-.hideable {
-    transition: opacity $transition-lapse;
-
-    &.hidden {
-        opacity: 0% !important;
     }
 }
