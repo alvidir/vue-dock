@@ -6,7 +6,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType,  inject } from "vue"
-import { SETTINGS_KEY } from "./Dock.vue"
+import { SCOPE_KEY } from "./Dock.vue"
 
 export enum Orientation {
     VERTICAL = "vertical",
@@ -29,8 +29,7 @@ export default defineComponent({
     },
 
     setup() {
-        const settings = inject<Settings>(SETTINGS_KEY)
-        console.log(settings?.orientation)
+        const settings = inject<Settings>(SCOPE_KEY)
         return {
             settings
         }

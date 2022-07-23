@@ -2,7 +2,7 @@
     <div class="dock-container"
         :class="dockContainerClass">
         <div class="dock">
-            <slot></slot>
+            <slot :click="onItemClick"></slot>
         </div>
     </div>
 </template>
@@ -10,6 +10,9 @@
 <script lang="ts">
 import { defineComponent, PropType, reactive, provide, computed } from "vue"
 import { Orientation } from "./DockSeparator.vue"
+import {
+    CLICK_EVENT_NAME
+} from "./constants"
 
 export enum Position {
     TOP = "top",
@@ -32,15 +35,18 @@ const PositionOrientation: {[key: string]: Orientation} = {
     [Position.LEFT]: Orientation.VERTICAL,
 }
 
-export const SETTINGS_KEY = "settings"
+export const SCOPE_KEY = "scope"
 
 export default defineComponent({
     // eslint-disable-next-line
     name: "Dock",
-    emits: [],
+    emits: [
+        CLICK_EVENT_NAME
+    ],
 
     props: {
         active: Boolean,
+        selected: String,
         position: {
             type: String as PropType<Position>,
             default: Position.LEFT,
@@ -48,30 +54,46 @@ export default defineComponent({
     },
 
     setup() {
-        const settings: {[key: string]: string} = {
+        const scope: {[key: string]: unknown} = {
+            selected: undefined as unknown as (id: string) => boolean,
             position: Position.RIGHT,
-            orientation: PositionOrientation[Position.RIGHT]
+            orientation: PositionOrientation[Position.RIGHT],
+            onClick: undefined as unknown as (id: string) => void,
         }
         
-        provide(SETTINGS_KEY, reactive(settings))
+        provide(SCOPE_KEY, reactive(scope))
 
         return {
-            settings
+            scope
         }
     },
 
     created() {
-        this.settings.position = ReversePosition[this.position]
-        this.settings.orientation = PositionOrientation[this.position]
+        this.scope.selected = this.isSelected
+        this.scope.position = ReversePosition[this.position]
+        this.scope.orientation = PositionOrientation[this.position]
+        this.scope.onClick = this.onItemClick
     },
 
     computed: {
-        dockContainerClass(): string {
-            return `${this.position} ${this.active? 'active' : null}`
+        dockContainerClass(): string[] {
+            let classes: string[] = [this.position]
+            if(this.active) classes.push('active')
+            return classes
         },
 
         orientation(): Orientation {
             return PositionOrientation[this.position]
+        }
+    },
+
+    methods: {
+        isSelected(id: string): boolean {
+            return id === this.selected
+        },
+
+        onItemClick(id: string) {
+            this.$emit(CLICK_EVENT_NAME, id)
         }
     }
 })

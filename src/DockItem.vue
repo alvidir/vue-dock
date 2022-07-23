@@ -1,6 +1,7 @@
 <template>
     <div class="dock-item tooltip"
-        :class="finalPosition">
+        :class="dockItemClass"
+        @click="onClick">
         <label class="tooltip-text">{{placeholder}}</label>
         <div class="dock-item-content">
         <slot></slot>
@@ -10,17 +11,25 @@
 
 <script lang="ts">
 import { defineComponent, PropType, inject } from "vue"
-import { SETTINGS_KEY, Position } from "./Dock.vue"
+import { SCOPE_KEY, Position } from "./Dock.vue"
+import {
+    CLICK_EVENT_NAME
+} from "./constants"
 
-interface Settings {
+interface Scope {
+    selected: (id: string) => boolean,
     position: Position
+    onClick: (id: string) => void,
 }
 
 export default defineComponent({
     name: "DockItem",
-    emits: [],
+    emits: [
+        CLICK_EVENT_NAME
+    ],
 
     props: {
+        id: String,
         selected: Boolean,
         placeholder: String,
         position: {
@@ -30,17 +39,34 @@ export default defineComponent({
     },
 
     setup() {
-        const settings = inject<Settings>(SETTINGS_KEY)
+        const scope = inject<Scope>(SCOPE_KEY)
         return {
-            settings
+            scope
         }
     },
 
     computed: {
         finalPosition(): Position | undefined {
-            return this.settings?.position || this.position 
-        }
+            return this.scope?.position || this.position 
+        },
+
+        dockItemClass(): string[] {
+            const position = this.scope?.position || this.position 
+            const selected =  this.id && this.scope?.selected(this.id)
+            
+            let classes: string[] = []
+            if (position) classes.push(position)
+            if(this.selected || selected) classes.push('selected')
+            return classes
+        },
     },
+
+    methods: {
+        onClick() {
+            this.$emit(CLICK_EVENT_NAME, this.id)
+            if (this.id) this.scope?.onClick(this.id)
+        }
+    }
 })
 </script>
 
@@ -63,6 +89,10 @@ export default defineComponent({
         max-height: 100%;
         max-width: 100%;
         margin: auto;
+    }
+
+    &.selected {
+        background: var(--color-accent);
     }
 }
 </style>

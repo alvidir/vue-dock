@@ -1,14 +1,16 @@
 <template>
-  <dock :active="false"
-        :position="'bottom'">
-    <dock-item placeholder="first item"><label>Aa</label></dock-item>
-    <dock-item placeholder="second item"><label>Bb</label></dock-item>
-    <dock-item placeholder="third item"><label>Cc</label></dock-item>
-    <dock-item placeholder="fourth item"><label>Dd</label></dock-item>
-    <dock-item placeholder="fifth item"><label>Ee</label></dock-item>
-    <dock-item placeholder="sixth item"><label>Ff</label></dock-item>
+  <dock :active="true"
+        :position="'left'"
+        :selected="selected"
+        @click="onClick">
+    <dock-item id="0" placeholder="first item"><label>Aa</label></dock-item>
+    <dock-item id="1" placeholder="second item"><label>Bb</label></dock-item>
+    <dock-item id="2" placeholder="third item"><label>Cc</label></dock-item>
+    <dock-item id="3" placeholder="fourth item"><label>Dd</label></dock-item>
+    <dock-item id="4" placeholder="fifth item"><label>Ee</label></dock-item>
+    <dock-item id="5" placeholder="sixth item"><label>Ff</label></dock-item>
     <dock-separator></dock-separator>
-    <dock-item placeholder="seventh item"><label>Gg</label></dock-item>
+    <dock-item id="6" placeholder="seventh item"><label>Gg</label></dock-item>
   </dock>
   <div>
     <h1>
@@ -27,10 +29,16 @@ export default defineComponent({
   name: 'ServeDev',
 
   data() {
-    return {}
+    return {
+      selected: ''
+    }
   },
 
-  methods: {},
+  methods: {
+    onClick(id: string) {
+      this.selected = id
+    }
+  },
 });
 </script>
 
@@ -38,7 +46,7 @@ export default defineComponent({
 @import "fibonacci-styles";
 
 * {
-  @extend .theme-dark;
+  @extend .theme-light;
 
   margin: 0;
   padding: 0;
