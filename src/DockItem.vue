@@ -92,7 +92,7 @@ export default defineComponent({
     }
 
     &.selected {
-        background: var(--color-accent);
+        background: var(--color-scrollbar-hover);
     }
 }
 </style>

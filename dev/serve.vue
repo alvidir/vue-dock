@@ -1,6 +1,6 @@
 <template>
-  <dock :active="true"
-        :position="'left'"
+  <dock :active="false"
+        :position="'right'"
         :selected="selected"
         @click="onClick">
     <dock-item id="0" placeholder="first item"><label>Aa</label></dock-item>
@@ -46,7 +46,7 @@ export default defineComponent({
 @import "fibonacci-styles";
 
 * {
-  @extend .theme-light;
+  @extend .theme-dark;
 
   margin: 0;
   padding: 0;
