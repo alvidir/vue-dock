@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, reactive, provide, computed } from "vue"
+import { defineComponent, PropType, reactive, provide } from "vue"
 import { Orientation } from "./DockSeparator.vue"
 import {
     CLICK_EVENT_NAME
