@@ -2,7 +2,7 @@
     <div class="dock-container"
         :class="dockContainerClass">
         <div class="dock">
-            <slot :click="onItemClick"></slot>
+            <slot></slot>
         </div>
     </div>
 </template>
@@ -214,11 +214,12 @@ export default defineComponent({
         margin-top: auto;
         margin-bottom: auto;
         border-radius: $fib-6 * 1px;
-        background: var(--color-background-primary);
+        background: var(--color-button);
         border: 1px solid var(--color-scrollbar);
         box-sizing: border-box;
         padding: $dock-ident;
         min-height: fit-content !important;
+        overflow: hidden;
     }
 }
 </style>

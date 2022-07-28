@@ -80,7 +80,7 @@ export default defineComponent({
     aspect-ratio: 1 / 1 !important;
 
     &:hover {
-        background: var(--color-button);
+        background: var(--color-button-hover);
     }
 
     .dock-item-content {
@@ -92,7 +92,7 @@ export default defineComponent({
     }
 
     &.selected {
-        background: var(--color-scrollbar-hover);
+        background: var(--color-button-active);
     }
 }
 </style>

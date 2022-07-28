@@ -1,6 +1,6 @@
 <template>
-  <dock :active="false"
-        :position="'right'"
+  <dock :active="true"
+        :position="'left'"
         :selected="selected"
         @click="onClick">
     <dock-item id="0" placeholder="first item"><label>Aa</label></dock-item>
